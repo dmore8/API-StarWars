@@ -4,10 +4,12 @@ import com.google.gson.JsonArray;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.annotation.Generated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
 @Document(collation = "Planet")
 public class PlanetDto {
-    @Id
-    private Long id;
     private String name;
     private String rotation_period_minutes;
     private String orbital_period;

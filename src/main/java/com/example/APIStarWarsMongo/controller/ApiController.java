@@ -1,6 +1,5 @@
 package com.example.APIStarWarsMongo.controller;
 
-import com.example.APIStarWarsMongo.model.PlanetDeserializer;
 import com.example.APIStarWarsMongo.model.PlanetDto;
 import com.example.APIStarWarsMongo.service.PlanetService;
 import com.google.gson.*;
@@ -11,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class ApiController {
@@ -68,10 +69,8 @@ public class ApiController {
             JsonArray planetas = gsonO.get("results").getAsJsonArray();
             for (JsonElement obj : planetas) {
                 if (obj.getAsJsonObject().get("name").getAsString().equals(name)) {
-                    GsonBuilder gsonB = new GsonBuilder();
-                    gsonB.registerTypeAdapter(PlanetDto.class,new PlanetDeserializer());
-                    PlanetDto response = gsonB.create().fromJson(obj.toString(),PlanetDto.class);
-                    Integer rot = Integer.valueOf(response.getRotation_period_minutes());
+                    PlanetDto response = new Gson().fromJson(obj.toString(),PlanetDto.class);
+                    Integer rot = Integer.valueOf(obj.getAsJsonObject().get("rotation_period").getAsString());
                     response.setRotation_period_minutes(String.valueOf(rot*60));
                     this.planetService.createPlanet(response);
                     return ResponseEntity.ok().body(response.toString());
@@ -86,6 +85,17 @@ public class ApiController {
         return new ResponseEntity<>("NOT FOUND",HttpStatus.NOT_FOUND);
 
 
+    }
+
+    @GetMapping("/planet/name/{name}")
+    public ResponseEntity<String> getPlanetByName(@PathVariable String name) throws Exception {
+        List<PlanetDto> planetas = this.planetService.getPlanetByName();
+        for (PlanetDto pla:planetas) {
+            if(pla.getName().equals(name)) {
+                return ResponseEntity.ok().body(pla.toString());
+            }
+        }
+        return new ResponseEntity<>("NOT FOUND",HttpStatus.NOT_FOUND);
     }
 
 }

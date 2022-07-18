@@ -8,7 +8,7 @@ import javax.annotation.Generated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
-@Document(collation = "Planet")
+@Document(collection = "Planet")
 public class PlanetDto {
     private String name;
     private String rotation_period_minutes;

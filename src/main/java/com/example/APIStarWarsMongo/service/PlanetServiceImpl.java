@@ -26,10 +26,8 @@ public class PlanetServiceImpl implements PlanetService {
     }
 
     @Override
-    public List<PlanetDto> getPlanetByName() {
-        List<PlanetDto> list = planetRepository.findAll();
-        return list;
-
+    public List<PlanetDto> getPlanetByName(String name) {
+        return planetRepository.findByName(name);
     }
 
 

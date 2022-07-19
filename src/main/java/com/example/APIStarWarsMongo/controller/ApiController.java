@@ -94,7 +94,7 @@ public class ApiController {
 
     @GetMapping("/planet/name/{name}")
     public ResponseEntity<String> getPlanetByName(@PathVariable String name) throws Exception {
-        List<PlanetDto> planetas = this.planetService.getPlanetByName();
+        List<PlanetDto> planetas = this.planetService.getPlanetByName(name);
         for (PlanetDto pla:planetas) {
             if(pla.getName().equals(name)) {
                 return ResponseEntity.ok().body(pla.toString());

@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface PlanetService {
     PlanetDto createPlanet(PlanetDto planet);
-    List<PlanetDto> getPlanetByName();
+    List<PlanetDto> getPlanetByName(String name);
 }

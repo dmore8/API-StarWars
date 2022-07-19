@@ -1,6 +1,7 @@
 package com.example.APIStarWarsMongo.controller;
 
 import com.example.APIStarWarsMongo.model.PlanetDto;
+import com.example.APIStarWarsMongo.repository.PlanetRepository;
 import com.example.APIStarWarsMongo.service.PlanetService;
 import com.google.gson.*;
 import kong.unirest.Unirest;
@@ -18,6 +19,8 @@ public class ApiController {
     private static String url ="https://swapi.dev/api/people";
     @Autowired
     private PlanetService planetService;
+    @Autowired
+    PlanetRepository planetRepository;
 
     @GetMapping("/people")
     public ResponseEntity<String> getPeople(){
@@ -72,6 +75,8 @@ public class ApiController {
                     PlanetDto response = new Gson().fromJson(obj.toString(),PlanetDto.class);
                     Integer rot = Integer.valueOf(obj.getAsJsonObject().get("rotation_period").getAsString());
                     response.setRotation_period_minutes(String.valueOf(rot*60));
+                    response.setResidents_string(obj.getAsJsonObject().get("residents").getAsJsonArray().toString());
+                    response.setFilms_string(obj.getAsJsonObject().get("films").getAsJsonArray().toString());
                     this.planetService.createPlanet(response);
                     return ResponseEntity.ok().body(response.toString());
                 }
